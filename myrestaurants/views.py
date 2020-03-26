@@ -1,3 +1,6 @@
+import time
+import requests
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -36,6 +39,8 @@ class RestaurantDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(RestaurantDetail, self).get_context_data(**kwargs)
         context['RATING_CHOICES'] = RestaurantReview.RATING_CHOICES
+        time.sleep(1)
+        print("Taking a long time...")
         return context
 
 class RestaurantCreate(LoginRequiredMixin, CreateView):
@@ -59,6 +64,8 @@ class DishCreate(LoginRequiredMixin, CreateView):
 
 @login_required()
 def review(request, pk):
+    print("External call to yelp...")
+    result = requests.get("https://www.yelp.com")
     restaurant = get_object_or_404(Restaurant, pk=pk)
     if RestaurantReview.objects.filter(restaurant=restaurant, user=request.user).exists():
         RestaurantReview.objects.get(restaurant=restaurant, user=request.user).delete()

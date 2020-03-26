@@ -1,0 +1,5 @@
+Django==2.0
+newrelic==5.10.0.138
+Pillow==7.0.0
+pytz==2019.3
+whitenoise==5.0.1
